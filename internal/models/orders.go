@@ -56,5 +56,32 @@ func (m *OrderModel) Get(id int) (*Order, error) {
 }
 
 func (m *OrderModel) Latest() ([]*Order, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires FROM orders
+	WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	orders := []*Order{}
+
+	for rows.Next() {
+		o := &Order{}
+
+		err = rows.Scan(&o.ID, &o.Title, &o.Content, &o.Created, &o.Expires)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, o)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orders, nil
 }
