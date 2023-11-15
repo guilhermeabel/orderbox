@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 )
 
@@ -27,11 +28,31 @@ func (m *OrderModel) Insert(title, content string, expires time.Time) (int, erro
 	}
 
 	id, err := result.LastInsertId()
-	return int(id), err
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
 }
 
 func (m *OrderModel) Get(id int) (*Order, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires FROM orders
+	WHERE expires > UTC_TIMESTAMP() AND id = ?`
+
+	row := m.DB.QueryRow(stmt, id)
+
+	o := &Order{}
+
+	err := row.Scan(&o.ID, &o.Title, &o.Content, &o.Created, &o.Expires)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		}
+
+		return nil, err
+	}
+
+	return o, nil
 }
 
 func (m *OrderModel) Latest() ([]*Order, error) {
