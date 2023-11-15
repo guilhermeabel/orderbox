@@ -8,6 +8,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/guilhermeabel/restaurant-ordering-system/internal/models"
 )
 
 type config struct {
@@ -19,6 +20,7 @@ var cfg config
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	orders   *models.OrderModel
 }
 
 func main() {
@@ -40,6 +42,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		orders:   &models.OrderModel{DB: db},
 	}
 
 	srv := &http.Server{
