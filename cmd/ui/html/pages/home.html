@@ -1,5 +1,32 @@
 {{define "title"}}Home{{end}}
 {{define "main"}}
 <h2>Latest Orders</h2>
-<p>There's nothing to see here yet!</p>
+<div class="row">
+	{{if .Orders}}
+	{{range .Orders}}
+	<div class="col-4 mt-4">
+		<div class="card">
+			<div class="card-header">
+				#{{.ID}}
+			</div>
+			<div class="card-body">
+				<blockquote class="blockquote mb-0">
+					<p>{{.Title}}</p>
+					<footer class="blockquote-footer">{{.Content}}</footer>
+				</blockquote>
+			</div>
+			<div class="card-footer text-body-secondary">
+				<time>Created: {{.Created.Local}}</time>
+				<br />
+				<time>Expires: {{.Expires.Local}}</time>
+			</div>
+		</div>
+	</div>
+	{{end}}
+	{{else}}
+	<p>There's nothing to see here yet!</p>
+	{{end}}
+
+</div>
+
 {{end}}
