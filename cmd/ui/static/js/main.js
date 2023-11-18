@@ -1,3 +1,1 @@
-document.readyState(function() {
-	console.log("hello");
-});
+console.log("Hello, world!");

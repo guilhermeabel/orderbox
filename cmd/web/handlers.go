@@ -20,6 +20,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"../ui/html/base.html",
 		"../ui/html/components/nav.html",
+		"../ui/html/components/footer.html",
 		"../ui/html/pages/home.html",
 	}
 
