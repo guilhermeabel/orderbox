@@ -17,6 +17,12 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	orders, err := app.orders.Latest()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
 	files := []string{
 		"../ui/html/base.html",
 		"../ui/html/components/nav.html",
@@ -31,7 +37,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
+	data := &templateData{
+		Orders: orders,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 		http.Error(w, "Internal Server Error", 500)
@@ -56,7 +66,27 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", order)
+	files := []string{
+		"../ui/html/base.html",
+		"../ui/html/components/nav.html",
+		"../ui/html/components/footer.html",
+		"../ui/html/pages/order.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	data := &templateData{
+		Order: order,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
