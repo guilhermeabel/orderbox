@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"text/template"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/guilhermeabel/orderbox/internal/models"
@@ -18,15 +19,16 @@ type config struct {
 var cfg config
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	orders   *models.OrderModel
+	errorLog      *log.Logger
+	infoLog       *log.Logger
+	orders        *models.OrderModel
+	templateCache map[string]*template.Template
 }
 
 func main() {
 
 	flag.StringVar(&cfg.addr, "addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/orderbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:password@/orderbox?parseTime=true", "MySQL data source name")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -39,10 +41,16 @@ func main() {
 
 	defer db.Close()
 
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		orders:   &models.OrderModel{DB: db},
+		errorLog:      errorLog,
+		infoLog:       infoLog,
+		orders:        &models.OrderModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	srv := &http.Server{

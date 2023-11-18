@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"text/template"
 	"time"
 
 	"github.com/guilhermeabel/orderbox/internal/models"
@@ -23,29 +22,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"../ui/html/base.html",
-		"../ui/html/components/nav.html",
-		"../ui/html/components/footer.html",
-		"../ui/html/pages/home.html",
-	}
+	data := app.newTemplateData(r)
+	data.Orders = orders
 
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		http.Error(w, "Internal Server Error", 500)
-		return
-	}
-
-	data := &templateData{
-		Orders: orders,
-	}
-
-	err = ts.ExecuteTemplate(w, "base", data)
-	if err != nil {
-		app.serverError(w, err)
-		http.Error(w, "Internal Server Error", 500)
-	}
+	app.render(w, http.StatusOK, "home.html", data)
 }
 
 func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
@@ -66,27 +46,10 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"../ui/html/base.html",
-		"../ui/html/components/nav.html",
-		"../ui/html/components/footer.html",
-		"../ui/html/pages/order.html",
-	}
+	data := app.newTemplateData(r)
+	data.Order = order
 
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	data := &templateData{
-		Order: order,
-	}
-
-	err = ts.ExecuteTemplate(w, "base", data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, http.StatusOK, "order.html", data)
 }
 
 func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
