@@ -16,9 +16,9 @@
 				</blockquote>
 			</div>
 			<div class="card-footer text-body-secondary">
-				<time>Created: {{.Created.Local}}</time>
+				<time>Created: {{parseDate .Created.Local}}</time>
 				<br />
-				<time>Expires: {{.Expires.Local}}</time>
+				<time>Expires: {{parseDate .Expires.Local}}</time>
 			</div>
 		</div>
 	</div>
