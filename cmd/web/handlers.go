@@ -8,7 +8,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/guilhermeabel/restaurant-ordering-system/internal/models"
+	"github.com/guilhermeabel/orderbox/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {

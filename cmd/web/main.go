@@ -8,7 +8,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/guilhermeabel/restaurant-ordering-system/internal/models"
+	"github.com/guilhermeabel/orderbox/internal/models"
 )
 
 type config struct {
