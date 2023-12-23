@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
-func (app *application) routes() *http.ServeMux {
+func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir("../ui/static/"))
@@ -11,5 +11,5 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("/order/view", app.viewOrder)
 	mux.HandleFunc("/order/create", app.createOrder)
 
-	return mux
+	return app.recoverPanic(app.logRequest(secureHeaders(mux)))
 }
