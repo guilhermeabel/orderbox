@@ -1,15 +1,20 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/julienschmidt/httprouter"
+)
 
 func (app *application) routes() http.Handler {
-	mux := http.NewServeMux()
+	router := httprouter.New()
 
 	fileServer := http.FileServer(http.Dir("../ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/order/view", app.viewOrder)
-	mux.HandleFunc("/order/create", app.createOrder)
+	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	return app.recoverPanic(app.logRequest(secureHeaders(mux)))
+	router.HandlerFunc(http.MethodGet, "/", app.home)
+	router.HandlerFunc(http.MethodGet, "/order/view/:id", app.viewOrder)
+	router.HandlerFunc(http.MethodPost, "/order/create", app.createOrderPost)
+
+	return app.recoverPanic(app.logRequest(secureHeaders(router)))
 }
