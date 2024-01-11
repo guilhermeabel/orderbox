@@ -1,0 +1,16 @@
+{{define "title"}}Create a New Order{{end}}
+{{define "main"}}
+<form action='/order/create' method='POST'>
+	<div>
+		<label>Title:</label>
+		<input type='text' name='title'>
+	</div>
+	<div>
+		<label>Content:</label>
+		<textarea name='content'></textarea>
+	</div>
+	<div>
+		<input type='submit' value='Publish order'>
+	</div>
+</form>
+{{end}}

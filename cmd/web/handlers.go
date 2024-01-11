@@ -51,7 +51,8 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Create a new order..."))
+	data := app.newTemplateData(r)
+	app.render(w, http.StatusOK, "create.html", data)
 }
 
 func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) {
