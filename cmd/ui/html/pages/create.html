@@ -1,16 +1,19 @@
 {{define "title"}}Create a New Order{{end}}
 {{define "main"}}
-<form action='/order/create' method='POST'>
-	<div>
-		<label>Title:</label>
-		<input type='text' name='title'>
-	</div>
-	<div>
-		<label>Content:</label>
-		<textarea name='content'></textarea>
-	</div>
-	<div>
-		<input type='submit' value='Publish order'>
-	</div>
-</form>
+<div class="col-md-4 col-xs-12">
+	<form action="/order/create" method="POST">
+		<div class="mb-3">
+			<label for="title" class="form-label">Title:</label>
+			<input type="text" class="form-control" id="title" placeholder="Order title">
+		</div>
+
+		<div class="mb-3">
+			<label for="content" class="form-label">Content:</label>
+			<textarea class="form-control" rows="3" name="content"></textarea>
+		</div>
+		<div>
+			<button class="btn btn-primary mb-3" type="submit">Post</button>
+		</div>
+	</form>
+</div>
 {{end}}
