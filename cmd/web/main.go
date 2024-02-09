@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"text/template"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/guilhermeabel/orderbox/internal/models"
@@ -35,7 +34,6 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	time.Sleep(5 * time.Second)
 	db, err := openDB(*dsn)
 	if err != nil {
 		errorLog.Fatal(err)

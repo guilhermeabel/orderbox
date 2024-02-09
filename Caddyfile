@@ -1,0 +1,7 @@
+{
+	auto_https disable_redirects
+}
+
+:80 {
+	reverse_proxy app:80
+}
