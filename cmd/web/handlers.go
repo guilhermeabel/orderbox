@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/guilhermeabel/orderbox/internal/models"
+	"github.com/guilhermeabel/orderbox/internal/validator"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -52,26 +53,44 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
+	data.Form = createOrderForm{}
+
 	app.render(w, http.StatusOK, "create.html", data)
 }
 
 func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, 4096)
+
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	title := r.PostForm.Get("title")
-	content := r.PostForm.Get("content")
-	expires := time.Now().AddDate(0, 0, 1)
+	form := createOrderForm{
+		Title:   r.PostForm.Get("title"),
+		Content: r.PostForm.Get("content"),
+	}
+
+	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
+	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
+
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "create.html", data)
+		return
+	}
 
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	id, err := app.orders.Insert(title, content, expires)
+	expires := time.Now().AddDate(0, 0, 1)
+
+	id, err := app.orders.Insert(form.Title, form.Content, expires)
 	if err != nil {
 		app.serverError(w, err)
 		return

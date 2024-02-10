@@ -12,6 +12,7 @@ type templateData struct {
 	Order       *models.Order
 	Orders      []*models.Order
 	CurrentYear int
+	Form        any
 }
 
 var functions = template.FuncMap{

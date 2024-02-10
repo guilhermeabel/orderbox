@@ -4,12 +4,27 @@
 	<form action="/order/create" method="POST">
 		<div class="mb-3">
 			<label for="title" class="form-label">Title:</label>
-			<input type="text" class="form-control" id="title" name="title" placeholder="Order title">
+
+			<input type="text"
+				class="form-control {{if .Form.FieldErrors.title}}is-invalid{{end}} {{if .Form.Title }}is-valid{{end}}"
+				id="title" name="title" placeholder="Order title" value='{{.Form.Title}}'>
+
+			{{with .Form.FieldErrors.title}}
+			<label class='error'>{{.}}</label>
+			{{end}}
 		</div>
 
 		<div class="mb-3">
 			<label for="content" class="form-label">Content:</label>
-			<textarea class="form-control" rows="3" name="content"></textarea>
+
+
+			<textarea
+				class="form-control {{if .Form.FieldErrors.content}}is-invalid{{end}} {{if .Form.Content }}is-valid{{end}}"
+				rows="3" name="content">{{.Form.Content}}</textarea>
+
+			{{with .Form.FieldErrors.content}}
+			<label class='error'>{{.}}</label>
+			{{end}}
 		</div>
 		<div>
 			<button class="btn btn-primary mb-3" type="submit">Post</button>
