@@ -45,8 +45,12 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	flash := app.sessionManager.PopString(r.Context(), "flash")
+
 	data := app.newTemplateData(r)
 	data.Order = order
+
+	data.Flash = flash
 
 	app.render(w, http.StatusOK, "order.html", data)
 }
@@ -90,6 +94,8 @@ func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) 
 		app.serverError(w, err)
 		return
 	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Order successfully created")
 
 	http.Redirect(w, r, fmt.Sprintf("/order/view/%d", id), http.StatusSeeOther)
 }
