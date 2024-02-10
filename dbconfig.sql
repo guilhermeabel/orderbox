@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS orderbox CHARACTER SET utf8mb4 COLLATE utf8mb4_uni
 
 USE orderbox;
 
-CREATE USER 'web'@'localhost' IDENTIFIED BY 'pass';
+CREATE USER 'web'@'localhost' IDENTIFIED BY 'password';
 
 GRANT ALL PRIVILEGES ON orderbox.* TO 'web'@'localhost';
 
