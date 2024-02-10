@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
 	router := httprouter.New()
-
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 	})
@@ -16,10 +16,13 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.Dir("../ui/static/"))
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	router.HandlerFunc(http.MethodGet, "/", app.home)
-	router.HandlerFunc(http.MethodGet, "/order/view/:id", app.viewOrder)
-	router.HandlerFunc(http.MethodGet, "/order/create", app.createOrder)
-	router.HandlerFunc(http.MethodPost, "/order/create", app.createOrderPost)
+	dynamic := alice.New(app.sessionManager.LoadAndSave)
 
-	return app.recoverPanic(app.logRequest(secureHeaders(router)))
+	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
+	router.Handler(http.MethodGet, "/order/view/:id", dynamic.ThenFunc(app.viewOrder))
+	router.Handler(http.MethodGet, "/order/create", dynamic.ThenFunc(app.createOrder))
+	router.Handler(http.MethodPost, "/order/create", dynamic.ThenFunc(app.createOrderPost))
+
+	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+	return standard.Then(router)
 }
