@@ -56,15 +56,20 @@ func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", http.MethodPost)
-		app.clientError(w, http.StatusMethodNotAllowed)
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	title := "O snail"
-	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"
+	title := r.PostForm.Get("title")
+	content := r.PostForm.Get("content")
 	expires := time.Now().AddDate(0, 0, 1)
+
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
 
 	id, err := app.orders.Insert(title, content, expires)
 	if err != nil {
@@ -72,5 +77,5 @@ func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/order/view/%d", id), http.StatusSeeOther)
 }
