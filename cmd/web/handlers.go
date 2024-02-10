@@ -59,17 +59,12 @@ func (app *application) createOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createOrderPost(w http.ResponseWriter, r *http.Request) {
-	r.Body = http.MaxBytesReader(w, r.Body, 4096)
+	var form createOrderForm
 
-	err := r.ParseForm()
+	err := app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
-	}
-
-	form := createOrderForm{
-		Title:   r.PostForm.Get("title"),
-		Content: r.PostForm.Get("content"),
 	}
 
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")

@@ -3,3 +3,7 @@ body {
 	color: #003049;
 	background-color: #fff;
 }
+
+label.error {
+	color: #d62828;
+}
