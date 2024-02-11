@@ -1,34 +1,38 @@
 {{define "nav"}}
 
-<nav class="navbar bg-body-tertiary">
-	<div class="container">
+<div data-bs-theme="dark">
+	<nav class="navbar bg-body-tertiary">
+		<div class="container-fluid">
 
-		<ul class="nav nav-underline">
-			<a class="navbar-brand" href="/">
-				Orderbox </a>
-			<li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="/">Home</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/">Orders</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/order/create">Create Order</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/user/signup">Signup</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/user/login">Login</a>
-			</li>
-			<li class="nav-item">
-				<form action='/user/logout' method='POST'>
-					<button class="nav-link" type="submit">Logout</button>
-				</form>
-			</li>
-		</ul>
-	</div>
-</nav>
+			<ul class="nav nav-underline">
+				<a class="navbar-brand" href="/">
+					Orderbox </a>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/">Orders</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/order/create">Create Order</a>
+				</li>
+			</ul>
 
+			<ul class="nav nav-underline">
+				<li class="nav-item">
+					<a class="nav-link" href="/user/signup">Signup</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/user/login">Login</a>
+				</li>
+				<li class="nav-item">
+					<form action='/user/logout' method='POST'>
+						<button class="nav-link" type="submit">Logout</button>
+					</form>
+				</li>
+			</ul>
+		</div>
+	</nav>
 
+</div>
 {{end}}
