@@ -7,3 +7,16 @@ type createOrderForm struct {
 	Content             string `form:"content"`
 	validator.Validator `form:"-"`
 }
+
+type userSignupForm struct {
+	Name                string `form:"name"`
+	Email               string `form:"email"`
+	Password            string `form:"password"`
+	validator.Validator `form:"-"`
+}
+
+type userLoginForm struct {
+	Email               string `form:"email"`
+	Password            string `form:"password"`
+	validator.Validator `form:"-"`
+}
