@@ -45,12 +45,8 @@ func (app *application) viewOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	flash := app.sessionManager.PopString(r.Context(), "flash")
-
 	data := app.newTemplateData(r)
 	data.Order = order
-
-	data.Flash = flash
 
 	app.render(w, http.StatusOK, "order.html", data)
 }
