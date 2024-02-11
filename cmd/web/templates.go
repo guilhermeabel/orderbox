@@ -9,11 +9,12 @@ import (
 )
 
 type templateData struct {
-	Order       *models.Order
-	Orders      []*models.Order
-	CurrentYear int
-	Form        any
-	Flash       string
+	Order           *models.Order
+	Orders          []*models.Order
+	CurrentYear     int
+	Form            any
+	Flash           string
+	IsAuthenticated bool
 }
 
 var functions = template.FuncMap{

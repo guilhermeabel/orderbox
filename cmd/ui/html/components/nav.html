@@ -10,26 +10,31 @@
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="/">Home</a>
 				</li>
+				{{if .IsAuthenticated}}
 				<li class="nav-item">
 					<a class="nav-link" href="/">Orders</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/order/create">Create Order</a>
 				</li>
+				{{end}}
 			</ul>
 
 			<ul class="nav nav-underline">
+				{{if .IsAuthenticated}}
+				<li class="nav-item">
+					<form action='/user/logout' method='POST'>
+						<button class="nav-link" type="submit">Logout</button>
+					</form>
+				</li>
+				{{else}}
 				<li class="nav-item">
 					<a class="nav-link" href="/user/signup">Signup</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/user/login">Login</a>
 				</li>
-				<li class="nav-item">
-					<form action='/user/logout' method='POST'>
-						<button class="nav-link" type="submit">Logout</button>
-					</form>
-				</li>
+				{{end}}
 			</ul>
 		</div>
 	</nav>
