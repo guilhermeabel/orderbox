@@ -1,2 +1,4 @@
-cmd/web/tmp
+cmd/web/tmp/*
+*.log
+*.pem
 

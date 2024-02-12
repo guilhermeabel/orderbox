@@ -2,4 +2,15 @@ body {
 	font-family: "Open Sans";
 	color: #003049;
 	background-color: #fff;
+	position: relative !important;
+}
+
+label.error {
+	color: #d62828;
+}
+
+body div.flash {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
 }

@@ -1,0 +1,50 @@
+{{define "title"}}Signup{{end}}
+{{define "main"}}
+
+<div class="col-md-4 col-xs-12">
+	<form action="/user/signup" method="POST" novalidate>
+		<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+		<div class="mb-3">
+			<label for="name" class="form-label">Name:</label>
+
+			<input type="text"
+				class="form-control {{if .Form.FieldErrors.name}}is-invalid{{end}} {{if .Form.Name }}is-valid{{end}}"
+				id="name" name="name" placeholder="Your name" value='{{.Form.Name}}'>
+
+			{{with .Form.FieldErrors.name}}
+			<label class='error'>{{.}}</label>
+			{{end}}
+		</div>
+
+		<div class="mb-3">
+			<label for="email" class="form-label">Email:</label>
+
+			<input type="text"
+				class="form-control {{if .Form.FieldErrors.email}}is-invalid{{end}} {{if .Form.Email }}is-valid{{end}}"
+				id="email" name="email" placeholder="your@email.com" value='{{.Form.Email}}'>
+
+			{{with .Form.FieldErrors.email}}
+			<label class='error'>{{.}}</label>
+			{{end}}
+		</div>
+
+
+		<div class="mb-3">
+			<label for="password" class="form-label">Password:</label>
+
+			<input type="password"
+				class="form-control {{if .Form.FieldErrors.password}}is-invalid{{end}} {{if .Form.Password }}is-valid{{end}}"
+				id="password" name="password" placeholder="Your password">
+
+			{{with .Form.FieldErrors.password}}
+			<label class='error'>{{.}}</label>
+			{{end}}
+		</div>
+
+		<div>
+			<button class="btn btn-primary mb-3" type="submit">Post</button>
+		</div>
+	</form>
+</div>
+
+{{end}}
