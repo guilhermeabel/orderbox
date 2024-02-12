@@ -24,6 +24,7 @@
 				{{if .IsAuthenticated}}
 				<li class="nav-item">
 					<form action='/user/logout' method='POST'>
+						<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
 						<button class="nav-link" type="submit">Logout</button>
 					</form>
 				</li>

@@ -3,6 +3,7 @@
 
 <div class="col-md-4 col-xs-12">
 	<form action="/user/signup" method="POST" novalidate>
+		<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
 		<div class="mb-3">
 			<label for="name" class="form-label">Name:</label>
 

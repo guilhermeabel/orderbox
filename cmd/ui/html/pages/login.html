@@ -3,7 +3,7 @@
 
 <div class="col-md-4 col-xs-12">
 	<form action="/user/login" method="POST" novalidate>
-
+		<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
 		<div class="mb-3">
 			<label for="email" class="form-label">Email:</label>
 
