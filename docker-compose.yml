@@ -3,17 +3,19 @@ version: '3.9'
 services:
   mysql:
     image: mysql:latest
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      # MYSQL_DATABASE: ${DB_NAME}
+      # MYSQL_USER: ${DB_USER}
+      # MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./dbconfig.sql:/docker-entrypoint-initdb.d/init.sql
 
   app:
     build: .
     environment:
-      - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}

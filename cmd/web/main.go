@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"database/sql"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -33,14 +34,32 @@ type application struct {
 	sessionManager *scs.SessionManager
 }
 
+type Database struct {
+	Username string
+	Password string
+	Host     string
+	Port     string
+	Database string
+}
+
 func main() {
 
+	dbCon := Database{
+		Username: os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Host:     "mysql",
+		Port:     os.Getenv("DB_PORT"),
+		Database: os.Getenv("DB_NAME"),
+	}
+
 	flag.StringVar(&cfg.addr, "addr", ":80", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@tcp(mysql:3306)/orderbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbCon.Username, dbCon.Password, dbCon.Host, dbCon.Port, dbCon.Database), "MySQL data source name")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	infoLog.Printf("Database connection: %s", *dsn)
 
 	db, err := openDB(*dsn)
 	if err != nil {
