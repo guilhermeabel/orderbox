@@ -1,5 +1,7 @@
 # orderbox
 
+[![wakatime](https://wakatime.com/badge/user/45f613bb-791b-43df-bd37-e4eea47c362f/project/018be348-bda0-41d3-b33b-6aa803add3ed.svg)](https://wakatime.com/badge/user/45f613bb-791b-43df-bd37-e4eea47c362f/project/018be348-bda0-41d3-b33b-6aa803add3ed)
+
 This project serves the purpose of exploring the Go programming language and its capabilities, using the book Let's Go, from Alex Edwards, as a guide.
 The main premise is creating orders and saving them to a relational database.
 Even though the project has a simple premise, it explores several important web development concepts.
